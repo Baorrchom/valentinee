@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò chơi hỏi đáp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe4e1;
+        }
+        .container {
+            margin-top: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .question {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        .yes {
+            background-color: #ff69b4;
+            color: white;
+        }
+        .no {
+            background-color: #ddd;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        .btn.big {
+            font-size: 22px;
+            padding: 15px 25px;
+            animation: bounce 0.5s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+        .btn.special {
+            animation: glow 1s infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px pink; }
+            to { box-shadow: 0 0 20px hotpink; }
+        }
+        .image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            animation: fadeIn 1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/Screenshot 2025-02-12 224944.png" class="image" id="question-image">
+        <p class="question" id="question">Em ăn cơm chưa? 🍚</p>
+        <button class="btn yes" onclick="nextQuestion(true)">Em ăn ròii. ✅</button>
+        <button class="btn no" onclick="nextQuestion(false)">Chưa ❌</button>
+    </div>
+    
+    <script>
+        const questions = [
+            { q: "Tháng này có bao nhiêu ngày z? 🎉", a: ["28 ngày. 🙄", "Em kh bít tính 😵"], img: "images/Screenshot 2025-02-12 225021.png" },
+            { q: "13 + 1 bằng nhiu z em?", a: ["14. 🙄", "mười hai ngày 😵"], img: "images/Screenshot 2025-02-12 225010.png" },
+            { q: "Em có iu anh không? 💕", a: ["Có nè. 😘", "Không đâu 🙈"], img: "images/Screenshot 2025-02-12 225014.png" },
+            { q: "Em biết mai ngày gì không? 🎉", a: ["Cũm hong bít ❤️", "khongg😵"], img: "images/Screenshot 2025-02-12 225003.png" },
+            { q: "Em thích anh tặng quà gì? 🎁", a: ["Nhắm mắt lại đi. 🎀", "Đi ngủ luôn 😴"], img: "images/Screenshot 2025-02-12 224958.png" }
+        ];
+        let index = 0;
+
+        function nextQuestion(isPositive) {
+            if (index < questions.length) {
+                document.getElementById("question").textContent = questions[index].q;
+                document.getElementById("question-image").src = questions[index].img;
+                
+                let yesBtn = document.querySelector(".yes");
+                let noBtn = document.querySelector(".no");
+                
+                yesBtn.textContent = questions[index].a[0];
+                noBtn.textContent = questions[index].a[1];
+                
+                if (!isPositive) {
+                    yesBtn.classList.add("big");
+                    noBtn.classList.remove("big");
+                } else {
+                    noBtn.classList.add("big");
+                    yesBtn.classList.remove("big");
+                }
+                
+                if (questions[index].a[0].includes(".")) {
+                    yesBtn.classList.add("special");
+                } else {
+                    noBtn.classList.add("big");
+                }
+                
+                yesBtn.setAttribute("onclick", `handleFinal('${questions[index].a[0]}')`);
+                noBtn.setAttribute("onclick", `handleFinal('${questions[index].a[1]}')`);
+                index++;
+            } else {
+                document.querySelector(".container").innerHTML = "<h2>Chúc em một ngày vui vẻ! 🥰❤️</h2>";
+            }
+        }
+        function handleFinal(answer) {
+            if (answer === "Nhắm mắt lại đi. 🎀") {
+                document.querySelector(".container").innerHTML = "<h2>Nhắm kĩ kĩ xíu nha đừng có nhìn nha 🎁🥰</h2><img src='images/Screenshot 2025-02-12 225738.png'>";
+            } else if (answer === "Đi ngủ luôn 😴") {
+                document.querySelector(".container").innerHTML = "<h2>Sao lại chọn đi ngủ vậy! 😢</h2><img src='images/Screenshot 2025-02-12 230044.png'>";;
+            } else {
+                nextQuestion(answer === questions[index - 1].a[0]);
+            }
+        }
+    </script>
+</body>
+</html>
